@@ -2,8 +2,6 @@ package us.piit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,9 +18,6 @@ import java.time.Duration;
 
 public class SetUp {
     Logger log = LogManager.getLogger(SetUp.class.getName());
-    //String browserName = "edge";
-    String url = "https://www.saucedemo.com/";
-    String useCloudEnv = "true";
     WebDriver driver;
 
     public void getCloudDriver(String envName, String os, String osVersion, String browserName, String browserVersion, String username, String password) throws MalformedURLException {
@@ -51,21 +47,21 @@ public class SetUp {
         }
     }
 
-    @Before
-    public void setUp() throws MalformedURLException {
+    @Parameters({"useCloudEnv","envName","os","osVersion","browserName","browserVersion","url"})
+    @BeforeMethod
+    public void setUp(@Optional("false") String useCloudEnv, @Optional("browserstack") String envName, @Optional("windows") String os,
+                      @Optional("10") String osVersion, @Optional("chrome") String browserName, @Optional("110") String browserVersion,
+                      @Optional("https://www.google.com") String url) throws MalformedURLException {
         if (useCloudEnv.equalsIgnoreCase("true")){
-            getCloudDriver("browserstack","OS X","Big Sur","firefox","98","mohammadtaseen_JXBGzu","Kfir1hMhAFD2zyjCiMzm");
+            getCloudDriver(envName,os,osVersion,browserName,browserVersion,"mohammadtaseen_JXBGzu","Kfir1hMhAFD2zyjCiMzm");
         } else if(useCloudEnv.equalsIgnoreCase("false")){
-            getLocalDriver("chrome");
+            getLocalDriver(browserName);
         }
-        //open the Chrome browser
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
-
-        //navigate to login Page
         driver.get(url);
     }
-    @After
+    @AfterMethod
     public void tearDown(){
         //close browser
         driver.quit();

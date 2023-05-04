@@ -2,9 +2,8 @@ package us.piit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
-import org.openqa.selenium.By;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class LoginTest extends SetUp{
     Logger log = LogManager.getLogger(LoginTest.class.getName());
