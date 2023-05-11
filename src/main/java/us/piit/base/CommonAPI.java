@@ -1,9 +1,10 @@
-package us.piit;
+package us.piit.base;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,13 +12,23 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.*;
+import us.piit.utility.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Properties;
 
-public class SetUp {
-    Logger log = LogManager.getLogger(SetUp.class.getName());
+public class CommonAPI {
+    Logger log = LogManager.getLogger(CommonAPI.class.getName());
+    Properties prop = Utility.loadProperties();
+    String browserstackUsername = prop.getProperty("browserstack.username");
+    String browserstackPassword = prop.getProperty("browserstack.password");
+
+    String implicitWait = prop.getProperty("implicit.wait","5");
+    String windowMaximize = prop.getProperty("browser.maximize","true");
+    String takeScreenshots = prop.getProperty("take.screenshots","false");
+
     WebDriver driver;
 
     public void getCloudDriver(String envName, String os, String osVersion, String browserName, String browserVersion, String username, String password) throws MalformedURLException {
@@ -53,12 +64,14 @@ public class SetUp {
                       @Optional("10") String osVersion, @Optional("chrome") String browserName, @Optional("110") String browserVersion,
                       @Optional("https://www.google.com") String url) throws MalformedURLException {
         if (useCloudEnv.equalsIgnoreCase("true")){
-            getCloudDriver(envName,os,osVersion,browserName,browserVersion,"mohammadtaseen_JXBGzu","Kfir1hMhAFD2zyjCiMzm");
+            getCloudDriver(envName,os,osVersion,browserName,browserVersion,browserstackUsername,browserstackPassword);
         } else if(useCloudEnv.equalsIgnoreCase("false")){
             getLocalDriver(browserName);
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Long.parseLong(implicitWait)));
+        if (windowMaximize.equalsIgnoreCase("true")){
+            driver.manage().window().maximize();
+        }
         driver.get(url);
     }
     @AfterMethod
@@ -70,38 +83,31 @@ public class SetUp {
 
     //------------------------------------------------------------------------------------------------------------------
     //                                              selenium methods
-    //------------------------------------------------------------------------------------------------------------------.
+    //------------------------------------------------------------------------------------------------------------------
+
+    public WebDriver getDriver() {
+        return driver;
+    }
     public String getCurrentTitle(){
         return driver.getTitle();
     }
-    public String getElementText(String locator){
-        try {
-            return driver.findElement(By.cssSelector(locator)).getText();
-        }catch (Exception e){
-            return driver.findElement(By.xpath(locator)).getText();
-        }
+    public String getElementText(WebElement element){
+        return element.getText();
     }
-    public void clickOn(String locator){
-        try {
-            driver.findElement(By.cssSelector(locator)).click();
-        }catch (Exception e){
-            driver.findElement(By.xpath(locator)).click();
-        }
+    public void clickOn(WebElement element){
+        element.click();
     }
-    public void type(String locator, String text){
-        try {
-            driver.findElement(By.cssSelector(locator)).sendKeys(text);
-        }catch (Exception e){
-            driver.findElement(By.xpath(locator)).sendKeys(text);
-        }
+    public void type(WebElement element, String text){
+        element.sendKeys(text);
+
     }
-    public void hoverOver(String locator){
+    public void hoverOver(WebElement element){
         Actions actions = new Actions(driver);
-        try {
-            actions.moveToElement(driver.findElement(By.cssSelector(locator))).build().perform();
-        }catch (Exception e){
-            actions.moveToElement(driver.findElement(By.xpath(locator))).build().perform();
-        }
+        actions.moveToElement(element).build().perform();
+    }
+    public void hoverOverAndClickOn(WebElement element){
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).click().build().perform();
     }
     public void waitFor(int seconds){
         try {
@@ -110,25 +116,13 @@ public class SetUp {
             throw new RuntimeException(e);
         }
     }
-    public boolean isVisible(String locator){
-        try {
-            return driver.findElement(By.cssSelector(locator)).isDisplayed();
-        }catch (Exception e){
-            return driver.findElement(By.xpath(locator)).isDisplayed();
-        }
+    public boolean isVisible(WebElement element){
+        return element.isDisplayed();
     }
-    public boolean isInteractible(String locator){
-        try {
-            return driver.findElement(By.cssSelector(locator)).isEnabled();
-        }catch (Exception e){
-            return driver.findElement(By.xpath(locator)).isEnabled();
-        }
+    public boolean isInteractible(WebElement element){
+        return element.isEnabled();
     }
-    public boolean isChecked(String locator){
-        try {
-            return driver.findElement(By.cssSelector(locator)).isSelected();
-        }catch (Exception e){
-            return driver.findElement(By.xpath(locator)).isSelected();
-        }
+    public boolean isChecked(WebElement element){
+        return element.isSelected();
     }
 }

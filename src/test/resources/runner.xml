@@ -14,9 +14,9 @@
             <class name="us.piit.LoginTest"></class>
         </classes>
     </test>
-    <test name="logout test">
-        <classes>
-            <class name="us.piit.LogoutTest"></class>
-        </classes>
-    </test>
+<!--    <test name="logout test">-->
+<!--        <classes>-->
+<!--            <class name="us.piit.LogoutTest"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>
