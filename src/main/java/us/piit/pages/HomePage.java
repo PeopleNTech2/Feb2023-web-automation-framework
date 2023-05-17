@@ -36,8 +36,9 @@ public class HomePage extends CommonAPI {
         clickOn(hamburgerMenu);
         log.info("click on hamburger menu success");
     }
-    public void hoverOverOnAndClickLogoutLink(){
-        hoverOverAndClickOn(logoutLink);
+
+    public void hoverOverOnAndClickLogoutLink(WebDriver driver){
+        hoverOverAndClickOn(driver, logoutLink);
         log.info("click on logout link success");
     }
 

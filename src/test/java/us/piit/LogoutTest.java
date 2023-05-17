@@ -38,7 +38,7 @@ public class LogoutTest extends CommonAPI {
         Thread.sleep(1000);
 
         //hover hover & click on logout link
-        homePage.hoverOverOnAndClickLogoutLink();
+        homePage.hoverOverOnAndClickLogoutLink(getDriver());
 
         //check user is landed to the login page
 
@@ -49,6 +49,7 @@ public class LogoutTest extends CommonAPI {
         String actualLoginPageHeaderText = loginPage.getLoginPageHeaderText();
         Assert.assertEquals(expectedLoginPageHeaderText, actualLoginPageHeaderText);
         log.info("login page header text validation success");
+        captureScreenshot();
     }
 
 }

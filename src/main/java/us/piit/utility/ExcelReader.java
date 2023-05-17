@@ -91,9 +91,9 @@ public class ExcelReader {
     }
 
     public static void main(String[] args)  {
-        String path = "C:\\Users\\PNT\\eclipse-workspace\\Feb2023-web-automation-framework\\data\\data.xlsx";
+        String path = "C:\\Users\\PNT\\eclipse-workspace\\Feb2023-web-automation-framework\\data\\Luma Manual Test cases.xlsx";
         ExcelReader excelReader = new ExcelReader(path);
-        System.out.println(excelReader.getValueForGivenHeaderAndKey("data","ID","101"));
+        System.out.println(excelReader.getDataFromCell("Test Cases",0,0));
 //        List<String> items = excelReader.getEntireColumnForGivenHeader("Sheet1", "id");
 //        //String items = excelReader.getValueForGivenHeaderAndKey("Sheet1", "id", "id004");
 //        System.out.println(items);

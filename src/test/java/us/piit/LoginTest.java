@@ -40,7 +40,7 @@ public class LoginTest extends CommonAPI{
         waitFor(3);
     }
 
-    //@Test
+    @Test
     public void invalidUsername(){
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
@@ -58,7 +58,7 @@ public class LoginTest extends CommonAPI{
         Assert.assertEquals(expectedError, actualError);
     }
 
-    //@Test
+    @Test
     public void missingUsername(){
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
@@ -75,7 +75,7 @@ public class LoginTest extends CommonAPI{
         String actualError = loginPage.getErrorMessage();
         Assert.assertEquals(expectedError, actualError);
     }
-    //@Test
+    @Test
     public void missingPassword(){
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
