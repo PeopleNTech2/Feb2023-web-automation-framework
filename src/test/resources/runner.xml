@@ -9,11 +9,11 @@
 
     <parameter name="browserName" value="chrome"></parameter>
     <parameter name="url" value="https://www.saucedemo.com/"></parameter>
-<!--    <test name="login test">-->
-<!--        <classes>-->
-<!--            <class name="us.piit.LoginTest"></class>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="login test">
+        <classes>
+            <class name="us.piit.LoginTest"></class>
+        </classes>
+    </test>
     <test name="logout test">
         <classes>
             <class name="us.piit.LogoutTest"></class>
